@@ -5,7 +5,12 @@ using UnityEngine;
 public class MovementFps : MonoBehaviour {
 
     //creo una variable publica de velocidad 
-    public float speed = 10;
+    public float speed ;
+
+    void Start()
+    {
+        speed = Random.Range(10, 15);
+    }
 
     //Creo el metodo movement nuevo por organizacion 
     void Movement()
