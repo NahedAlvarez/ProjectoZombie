@@ -16,35 +16,8 @@ public class Player : MonoBehaviour
         speed = Random.Range(10, 15);
     }
 
-    void Update()
-    { 
-        transform.position += Movement(speed) * Time.deltaTime;//le ordenamos que se mueva hacia la direccion asignaada
-    }
-   
-    //el metodo retorna un vector 3 con direcciones  y tiene de argumento la cantidad de espacios que se movera hacia una direccionn 
-    Vector3 Movement(float dist)
-    {
+    
 
-        Vector3 vec = Vector3.zero;
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            vec.x -= dist;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            vec.x += dist;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            vec.z += dist;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            vec.z -= dist;   
-        }
-        return vec;
-    }
     //se crean variables para conener los structs
     GustoZombie gz;
     CitizenInfo ci;
