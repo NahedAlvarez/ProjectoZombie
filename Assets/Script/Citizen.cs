@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Citizen : MonoBehaviour
 {
-    public int age;
+
     public CitizenInfo ci;
     BoxCollider coll;
 
@@ -13,9 +13,11 @@ public class Citizen : MonoBehaviour
     { 
         ci.age = Random.Range(15, 100);
         ci.names = (Nombres)Random.Range(0, 20);
+        gameObject.name = ci.names.ToString();
+
     }
     //returna el struct
-    public CitizenInfo SendMensasgeCi()
+    public CitizenInfo SendMensasgeCi(int age ,int movel)
     {
         return ci;
     }

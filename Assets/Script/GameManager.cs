@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     readonly int minSpawn ;
     const int MAXSPAWN = 25;
-
+    public Text textZombieNum;
+    public Text textFarmerNum;
 
     public GameManager()
     {
@@ -38,10 +40,6 @@ public class GameManager : MonoBehaviour
                     break;
                 default:
                     go.AddComponent<Player>();
-                    go.AddComponent<MovementFps>();
-                    go.AddComponent<FpsController>();
-
-                    
                     typeOfSpawn = Random.Range(1, 3);
                     break;
             }

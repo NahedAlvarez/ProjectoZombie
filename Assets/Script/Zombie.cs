@@ -6,9 +6,10 @@ public class Zombie : MonoBehaviour
 {
 
     GameObject go;
-    public GustoZombie gz;
+    public ZombieInfo gz;
     public Gusto gusto;
     public StateZombie sz;
+
  
     //se le asigna un transform position aleatorio se asigna gameobject y cambia nombre 
     private void Start()
@@ -17,6 +18,7 @@ public class Zombie : MonoBehaviour
         go.name = "Zombie";
         //se obtiene un numero aleatorio para darle un color 
         int numColor=Random.Range(0,3);
+     
         switch (numColor)
         {
             case 0:
@@ -53,7 +55,7 @@ public class Zombie : MonoBehaviour
   
     }
     //se returna el struct gz   
-    public GustoZombie SendMensasge()
+    public ZombieInfo SendMensasge()
     {
         return gz;
     }
@@ -133,7 +135,7 @@ public enum StateZombie
     Rotate
 }
 //se crea una struct que contiene los enum de gusto zombie
-public struct GustoZombie
+public struct ZombieInfo
 {
     public Gusto gustoZombie;
 }

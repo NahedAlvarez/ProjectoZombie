@@ -8,5 +8,6 @@ public class Inicializar : MonoBehaviour
 	void Awake()
     {
         minValue = Random.Range(5, 16);
+        gameObject.AddComponent<GameManager>();
     }
 }
