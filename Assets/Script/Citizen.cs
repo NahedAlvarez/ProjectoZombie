@@ -10,8 +10,7 @@ public class Citizen : MonoBehaviour
 
     // transform posiiton se pasa aleatoriamente entre 10 y -10 se asignan los datos struct
     void Start ()
-    {
-        transform.position = new Vector3(Random.Range(-10, 10), 1, Random.Range(-10, 10));
+    { 
         ci.age = Random.Range(15, 100);
         ci.names = (Nombres)Random.Range(0, 20);
     }

@@ -14,6 +14,10 @@ public class Player : MonoBehaviour
         rb.GetComponent<Rigidbody>().useGravity = false;
         rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         speed = Random.Range(10, 15);
+        Camera.main.gameObject.AddComponent<FpsController>();
+        Camera.main.transform.SetParent(gameObject.transform);
+        Camera.main.transform.position = gameObject.transform.position;
+        Camera.main.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 1, gameObject.transform.position.z);
     }
 
     
@@ -33,7 +37,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.GetComponent<Citizen>())
         {
             ci = collision.gameObject.GetComponent<Citizen>().ci;
-            print("Soy un aldeano mi nombre es: " + ci.names.ToString() + " y tengo " + ci.age.ToString() + " años");
+            print("Mi nombre es: " + ci.names.ToString() + " y tengo " + ci.age.ToString() + " años");
         }
     }
 }

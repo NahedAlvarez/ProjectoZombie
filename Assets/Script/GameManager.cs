@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    GameObject manager;
+    readonly int minSpawn ;
+    const int MAXSPAWN = 25;
+
+
+    public GameManager()
+    {
+        minSpawn = Inicializar.minValue;
+    }
     //instancia un tipo de instancia que esta predifinida 
     void Start ()
     {
-        manager = GameObject.FindGameObjectWithTag("MainCamera");
+        
         int typeOfSpawn=-1;
-        int rangeOfSpawn = Random.Range(10, 20);
+
+
+        int rangeOfSpawn = Random.Range(minSpawn, MAXSPAWN);
 
         for (int i = 0; i<rangeOfSpawn;i++)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);//Se crea un gameobject 
-           //swith maneja el tipo de spawn 
+            go.transform.position = new Vector3(Random.Range(-10, 10), 1, Random.Range(-10, 10));
+            //swith maneja el tipo de spawn 
             switch (typeOfSpawn)
             {
                 case 1:
@@ -30,9 +40,8 @@ public class GameManager : MonoBehaviour
                     go.AddComponent<Player>();
                     go.AddComponent<MovementFps>();
                     go.AddComponent<FpsController>();
-                    manager.transform.SetParent(go.transform);
-                    manager.AddComponent<FpsController>();
-                    manager.transform.position = new Vector3(0, 1, 0);
+
+                    
                     typeOfSpawn = Random.Range(1, 3);
                     break;
             }
