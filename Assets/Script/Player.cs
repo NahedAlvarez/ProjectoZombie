@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Npc.Ally;
+using Npc.Enemy;
 
 [RequireComponent(typeof(Rigidbody))]//utilizamos Require component para colocar un rb automaticamente
 public class Player : MonoBehaviour
