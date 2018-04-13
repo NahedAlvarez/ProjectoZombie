@@ -67,6 +67,7 @@ namespace Npc
             //se crea una variable moveli 
             int moveli;
             int roteli;
+            // variable wait for seconds se crea para no instanciar repetitivamente el mismo valor 
             WaitForSeconds ws = new WaitForSeconds(3);
             IEnumerator fade()
             {
@@ -79,7 +80,7 @@ namespace Npc
                 roteli = Random.Range(0, 2);
                 StartCoroutine(fade());
             }
-            //se asigna los espacios que wse moveran
+            //se asigna los espacios que se moveran
             int move = 1;
             //sse crea un metodo que retorna un valor de tipo vector 3 y se aplica 
             Vector3 Movement(int dir)

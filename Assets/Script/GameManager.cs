@@ -16,23 +16,20 @@ public class GameManager : MonoBehaviour
 
 
     public GameManager()
-    {
-        
+    {        
         minSpawn = Inicializar.minValue;
-
-        Debug.Log(minSpawn);
-
     }
     //instancia un tipo de instancia que esta predifinida 
     void Awake()
     {
+        //se buscan los textos directamente 
         textZombieNum = FindObjectOfType<Canvas>().transform.FindChild("ZombieText").GetComponent<Text>();
         textFarmerNum = FindObjectOfType<Canvas>().transform.FindChild("FarmerText").GetComponent<Text>();
 
     }
     void Start ()
     {
-
+        //se diferecian los tipos de spawn entre 1 y 2 y se usa el default para instanciar al hero 
         int typeOfSpawn=-1;
         int rangeOfSpawn = Random.Range(minSpawn, MAXSPAWN);
 
@@ -56,17 +53,20 @@ public class GameManager : MonoBehaviour
                     typeOfSpawn = Random.Range(1, 3);
                     break;
             }
+            //se verifica el componente del go para identificar y añadir a la lista 
             if(go.GetComponent<Zombie>() || go.GetComponent<Citizen>())
             {
                 npcList.Add(go);
             }
         }
     }
+    //cuentan la cantidad de zombies y aldeanos que hay 
     int countZombie;
     int countFarmer;
 
     void Update()
     {
+        //se inician en 0 cada vez que cambian 
         countZombie = 0;
         countFarmer = 0;
         foreach (GameObject go in npcList)

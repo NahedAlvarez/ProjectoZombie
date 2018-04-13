@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     Rigidbody rb;
 
 
-    //inicializamos la velocidad del personaje y le damos una posicion al player
+    //inicializamos la velocidad del personaje y le damos una posicion al player  ademas de agragar el Fps Controller
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
