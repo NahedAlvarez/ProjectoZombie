@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         //se buscan los textos directamente 
-        textZombieNum = FindObjectOfType<Canvas>().transform.FindChild("ZombieText").GetComponent<Text>();
-        textFarmerNum = FindObjectOfType<Canvas>().transform.FindChild("FarmerText").GetComponent<Text>();
+        textZombieNum = FindObjectOfType<Canvas>().transform.Find("ZombieText").GetComponent<Text>();
+        textFarmerNum = FindObjectOfType<Canvas>().transform.Find("FarmerText").GetComponent<Text>();
 
     }
     void Start ()
