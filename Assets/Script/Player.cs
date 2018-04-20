@@ -4,20 +4,22 @@ using UnityEngine;
 using Npc.Ally;
 using Npc.Enemy;
 
-[RequireComponent(typeof(Rigidbody))]//utilizamos Require component para colocar un rb automaticamente
+[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
-    float speed;
+    readonly float speed;
     Rigidbody rb;
 
-
-    //inicializamos la velocidad del personaje y le damos una posicion al player  ademas de agragar el Fps Controller
+    public Player()
+    {
+        speed = Inicializar.speed;
+    }
+  
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.GetComponent<Rigidbody>().useGravity = false;
         rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
-        speed = Random.Range(10, 15);
         Camera.main.gameObject.AddComponent<FpsController>();
         Camera.main.transform.SetParent(gameObject.transform);
         Camera.main.transform.position = gameObject.transform.position;
@@ -26,13 +28,9 @@ public class Player : MonoBehaviour
         gameObject.AddComponent<FpsController>();
     }
 
-
-
-    //se crean variables para conener los structs
     ZombieInfo gz;
     CitizenInfo ci;
 
-    //cuando collisiona verifica el componente respectivo y trae los structs para imprimirlos
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<Zombie>())

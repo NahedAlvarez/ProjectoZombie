@@ -13,31 +13,27 @@ public class GameManager : MonoBehaviour
     public Text textFarmerNum;
     public List<GameObject> npcList = new List<GameObject>();
 
-
-
     public GameManager()
     {        
         minSpawn = Inicializar.minValue;
     }
-    //instancia un tipo de instancia que esta predifinida 
+    
     void Awake()
-    {
-        //se buscan los textos directamente 
+    {  
         textZombieNum = FindObjectOfType<Canvas>().transform.Find("ZombieText").GetComponent<Text>();
         textFarmerNum = FindObjectOfType<Canvas>().transform.Find("FarmerText").GetComponent<Text>();
-
     }
+
     void Start ()
-    {
-        //se diferecian los tipos de spawn entre 1 y 2 y se usa el default para instanciar al hero 
+    { 
         int typeOfSpawn=-1;
         int rangeOfSpawn = Random.Range(minSpawn, MAXSPAWN);
 
         for (int i = 0; i<rangeOfSpawn;i++)
         {
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);//Se crea un gameobject 
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.transform.position = new Vector3(Random.Range(-10, 10), 1, Random.Range(-10, 10));
-            //swith maneja el tipo de spawn 
+           
             switch (typeOfSpawn)
             {
                 case 1:
@@ -53,20 +49,20 @@ public class GameManager : MonoBehaviour
                     typeOfSpawn = Random.Range(1, 3);
                     break;
             }
-            //se verifica el componente del go para identificar y añadir a la lista 
+          
             if(go.GetComponent<Zombie>() || go.GetComponent<Citizen>())
             {
                 npcList.Add(go);
             }
         }
     }
-    //cuentan la cantidad de zombies y aldeanos que hay 
+   
     int countZombie;
     int countFarmer;
 
     void Update()
     {
-        //se inician en 0 cada vez que cambian 
+       
         countZombie = 0;
         countFarmer = 0;
         foreach (GameObject go in npcList)
@@ -82,14 +78,5 @@ public class GameManager : MonoBehaviour
         }
         textZombieNum.text = "Quedan "+countZombie+" Zombies";
         textFarmerNum.text = "Quedan " + countFarmer + " Citizen";
-
-
     }
-   
-
-
-
-
 }
-
-

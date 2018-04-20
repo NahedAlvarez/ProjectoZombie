@@ -7,22 +7,29 @@ namespace Npc
     namespace Enemy
     {
 
-        public class Zombie : MonoBehaviour
+        public class Zombie : Npcs
         {
-
-            GameObject go;
+            public GameObject go;
             public ZombieInfo gz;
             public Gusto gusto;
-            public StateZombie sz;
+            public GameObject playerObject;
 
 
-            //se le asigna un transform position aleatorio se asigna gameobject y cambia nombre 
             private void Start()
             {
                 go = gameObject;
+                edad = Random.Range(15, 100);
                 go.name = "Zombie";
-                //se obtiene un numero aleatorio para darle un color 
                 int numColor = Random.Range(0, 3);
+                GameObject[] gamesInGame = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
+                foreach (GameObject Ago in gamesInGame)
+                {
+                    Component aComponent = Ago.GetComponent(typeof(Player));
+                    if (aComponent != null)
+                    {
+                        playerObject = Ago;
+                    }
+                }
 
                 switch (numColor)
                 {
@@ -36,113 +43,116 @@ namespace Npc
                         go.GetComponent<Renderer>().material.color = Color.green;
                         break;
                 }
-                StartCoroutine("fade");//Se inicia corrutina 
-                gusto = (Gusto)Random.Range(0, 5);//se crea un gusto aleatorio haciaendo un cast de int a Gusto
-                gz.gustoZombie = gusto;//se asigna gusto al struct
+
+                gusto = (Gusto)Random.Range(0, 5); 
+                gz.gustoZombie = gusto; 
             }
-            //Se da movimiento al zombie 
-            private void Update()
+
+
+            public override Vector3 Avanzar(int dir)
             {
-                if (sz == StateZombie.Moving)
-                {
+                return base.Avanzar(dir)/edad;
+                
+            }
 
-                    transform.position += Movement(moveli);
-                }
-                else if (sz == StateZombie.Idle)
-                {
+            Vector3 direc;
+            int distZombie = 5;
+            float disZombieMin = 1.2f;
+            float distancePlayer;
 
-                    transform.position += Vector3.zero;
-                }
-                else if (sz == StateZombie.Rotate)
+            public override void Agrupar()
+            {
+                if (distancePlayer < distZombie)
                 {
-                    transform.Rotate(RotationZ(roteli) * Time.deltaTime * Random.Range(1000, 1500));
+                    StopCoroutine(fade());
+                    Reaccionar();
                 }
+                else if (corroutinebool == false && distancePlayer > distZombie)
+                {
+                    corroutinebool = true;
+                    StartCoroutine(fade());
+                }
+
+                base.Agrupar();
 
             }
-            //se returna el struct gz   
+
+            public override void Reaccionar()
+            {
+                if (distancePlayer > disZombieMin)
+                {
+                    Actions = Acciones.Reaccionar;
+                    direc = Vector3.Normalize(playerObject.transform.position - transform.position);
+                    transform.position += direc * 0.1f;
+                    transform.LookAt(playerObject.transform);
+                    base.corroutinebool = false;
+                }
+            }
+
             public ZombieInfo SendMensasge()
             {
                 return gz;
             }
-            //se crea una variable moveli 
-            int moveli;
-            int roteli;
-            // variable wait for seconds se crea para no instanciar repetitivamente el mismo valor 
-            WaitForSeconds ws = new WaitForSeconds(3);
-            IEnumerator fade()
+
+        }
+        /*
+        Vector3 direc;
+        bool corroutinebool;
+        int distZombie = 5;
+        float disZombieMin = 1.2f;
+        float distancePlayer;
+
+        private void Update()
+        {
+            if (sz == StateZombie.Moving)
             {
-                //se returna cada 5 segundoss 
-                yield return ws;
-                //Se asgina un estado aleatorio
-                sz = (StateZombie)Random.Range(0, 3);
-                //se cambia el estado moveli
-                moveli = Random.Range(0, 4);
-                roteli = Random.Range(0, 2);
+
+                transform.position += Movement(moveli);
+            }
+            else if (sz == StateZombie.Idle)
+            {
+
+                transform.position += Vector3.zero;
+            }
+            else if (sz == StateZombie.Rotate)
+            {
+                transform.Rotate(RotationZ(roteli) * Time.deltaTime * Random.Range(1000, 1500));
+            }
+
+            Vector3 myvector3 = playerObject.transform.position - transform.position;
+            float distancePlayer = myvector3.magnitude;
+
+
+            if (distancePlayer < distZombie)
+            {
+
+                StopCoroutine(fade());
+
+
+                if (distancePlayer > disZombieMin)
+                {
+                    sz = StateZombie.Pursuing;
+                    direc = Vector3.Normalize(playerObject.transform.position - transform.position);
+                    transform.position += direc * 0.1f;
+                    transform.LookAt(playerObject.transform);
+                }
+
+            }
+            else if (corroutinebool == false && distancePlayer > distZombie)
+            {
+                corroutinebool = true;
                 StartCoroutine(fade());
             }
-            //se asigna los espacios que se moveran
-            int move = 1;
-            //sse crea un metodo que retorna un valor de tipo vector 3 y se aplica 
-            Vector3 Movement(int dir)
-            {
-                Vector3 vec = Vector3.zero;
 
-                if (dir == 0)
-                {
-                    vec.x -= move * Time.deltaTime;
-                }
-                if (dir == 1)
-                {
-                    vec.x += move * Time.deltaTime;
-                }
-                if (dir == 2)
-                {
-                    vec.z += move * Time.deltaTime;
-                }
-                if (dir == 3)
-                {
-                    vec.z -= move * Time.deltaTime;
-                }
-                return vec;
-            }
+        }
 
-            Vector3 RotationZ(int dir)
-            {
-                Vector3 vec = Vector3.zero;
-
-                if (dir == 0)
-                {
-                    vec.y -= move * Time.deltaTime;
-                }
-                if (dir == 1)
-                {
-                    vec.y += move * Time.deltaTime;
-                }
-                return vec;
-            }
-        }
-        //se crea un enum Gustos 
-        public enum Gusto
-        {
-            PiernaDerecha,
-            PiernaIzquierda,
-            BrazoDerecho,
-            BrazoIzquierdo,
-            Cabeza
-        }
-        //se crea un enum para los estados del zombie
-        public enum StateZombie
-        {
-            Moving,
-            Idle,
-            Rotate
-        }
-        //se crea una struct que contiene los enum de gusto zombie
-        public struct ZombieInfo
-        {
-            public Gusto gustoZombie;
+      
         }
 
 
+
+        */
     }
+
+
 }
