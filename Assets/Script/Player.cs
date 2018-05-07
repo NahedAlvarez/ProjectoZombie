@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-       
         rb = GetComponent<Rigidbody>();
         rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
         Camera.main.gameObject.AddComponent<FpsController>();
@@ -30,10 +29,7 @@ public class Player : MonoBehaviour
         Camera.main.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 1, gameObject.transform.position.z);
         gameObject.AddComponent<MovementFps>();
         gameObject.AddComponent<FpsController>();
-
     }
-
-
 
     ZombieInfo gz;
     CitizenInfo ci;
@@ -62,14 +58,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
 
-        if (collision.gameObject.GetComponent<Citizen>())
-        {
-            ci = collision.gameObject.GetComponent<Citizen>().ci;
-        }
-    }
 }
 
 

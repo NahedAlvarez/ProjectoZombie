@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Npc;
+using UnityEngine.UI;
 using Npc.Enemy;
 namespace Npc
 {
@@ -12,20 +13,23 @@ namespace Npc
         {
             public CitizenInfo ci;
 
+            GameManager gm;
+            public GameObject IntansCanvas;
 
-            void Start()
+
+            private void Start()
             {
+                gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+                IntansCanvas = Instantiate(gm.canvasZombie, gameObject.transform.position, Quaternion.identity);
+                IntansCanvas.transform.SetParent(gameObject.transform);
+                IntansCanvas.transform.position = transform.position;
+                DisplayModify();
+                IntansCanvas.SetActive(false);
                 StartCoroutine(fade());
                 ci.names = (Nombres)Random.Range(0, 20);
                 gameObject.name = ci.names.ToString();
                 Rigidbody rb = GetComponent<Rigidbody>();
                 rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
-            }
-
-
-            public CitizenInfo SendMensasgeCi()
-            {
-                return ci;
             }
 
 
@@ -54,16 +58,42 @@ namespace Npc
                     }
                 }
             }
+            Text farmerText;
+            public void DisplayModify()
+            {
+                Text[] tx;
+                tx = IntansCanvas.transform.Find("ZombieText").GetComponents<Text>();
+                IntansCanvas.SetActive(true);
+                farmerText = tx[0];
+                farmerText.text = "Hola soy " + ci.names.ToString() + " y tengo " + botAge.age + "Años ";
+            }
 
+            private void OnCollisionEnter(Collision collision)
+            {
+                if (collision.gameObject.GetComponent<Player>() && IntansCanvas != null)
+                {
+                    IntansCanvas.gameObject.SetActive(true);
+                }
+            }
+            private void OnCollisionExit(Collision collision)
+            {
+                if (collision.gameObject.GetComponent<Player>() && IntansCanvas != null)
+                {
+                    IntansCanvas.gameObject.SetActive(false);
+                }
+            }
 
 
             public static implicit operator Zombie(Citizen cit)
             {
                 Zombie z = cit.gameObject.AddComponent<Zombie>();
                 z.botAge.age = cit.botAge.age;
+                z.IntansCanvas = cit.IntansCanvas;
                 Destroy(cit);
                 return z;
             }
+
+
         }
     }
 }

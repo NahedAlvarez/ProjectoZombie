@@ -15,13 +15,13 @@ namespace Npc
             public GameObject playerObject;
             public bool convert = false;
             GameManager gm;
-            GameObject IntansCanvas;
+            public  GameObject IntansCanvas;
 
 
             private void Start()
             {
-                gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();      
-                IntansCanvas = Instantiate(gm.canvasZombie,gameObject.transform.position,Quaternion.identity);
+                gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+                IntansCanvas = Instantiate(gm.canvasZombie, gameObject.transform.position, Quaternion.identity);
                 IntansCanvas.transform.SetParent(gameObject.transform);
                 IntansCanvas.transform.position = transform.position;
 
@@ -30,7 +30,7 @@ namespace Npc
                 int numColor = Random.Range(0, 3);
                 Rigidbody rb = GetComponent<Rigidbody>();
                 rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
-              
+
                 switch (numColor)
                 {
                     case 0:
@@ -55,14 +55,14 @@ namespace Npc
                 if (id == true)
                 {
                     Text[] tx;
-                    tx = IntansCanvas.transform.Find("ZombieText").GetComponents<Text>(); 
+                    tx = IntansCanvas.transform.Find("ZombieText").GetComponents<Text>();
                     IntansCanvas.SetActive(true);
                     zombieMenssage = tx[0];
                     zombieMenssage.text = "Arrrrrr quiero comer: " + gz.gustoZombie.ToString();
-                   
+
                 }
-                
-                if(id == false)
+
+                if (id == false)
                 {
                     IntansCanvas.SetActive(false);
                 }
@@ -71,11 +71,12 @@ namespace Npc
 
             private void OnCollisionEnter(Collision collision)
             {
-                if(collision.gameObject.GetComponent<Citizen>())
+                if (collision.gameObject.GetComponent<Citizen>())
                 {
                     Citizen cit = collision.gameObject.GetComponent<Citizen>();
                     Zombie z = (Zombie)cit;
                     z.convert = true;
+                   
                 }
             }
         }
