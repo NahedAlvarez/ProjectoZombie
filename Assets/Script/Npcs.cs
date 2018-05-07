@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Npc.Ally;
+using Npc.Enemy;
+[RequireComponent(typeof(Rigidbody))]
 
 public class Npcs : MonoBehaviour
 {
     public Acciones Actions;
-    public int edad;
-
-
-
+    public bool reaction;
+    public Age botAge;
 
     float rotate = 1;
+
     public Vector3 Rotate(int dir)
     {
         Vector3 vec = Vector3.zero;
@@ -27,33 +29,59 @@ public class Npcs : MonoBehaviour
     }
 
     int move = 100;
-    public virtual Vector3 Avanzar(int dir)
+    public Vector3 Avanzar(int dir)
     {
         Vector3 vec = Vector3.zero;
 
         if (dir == 0)
         {
-            vec.x -= move * Time.deltaTime;
+            vec.x = -move * Time.deltaTime;
         }
         if (dir == 1)
         {
-            vec.x += move * Time.deltaTime;
+            vec.x = +move * Time.deltaTime;
         }
         if (dir == 2)
         {
-            vec.z += move * Time.deltaTime;
+            vec.z = +move * Time.deltaTime;
         }
         if (dir == 3)
         {
-            vec.z -= move * Time.deltaTime;
+            vec.z = -move * Time.deltaTime;
         }
-        return vec;
+        return vec/botAge.age;
     }
-
-
+    private void Awake()
+    {
+        botAge.age = Random.Range(15, 100);
+    }
+    public bool target;
     public virtual void Reaccionar()
     {
-        
+        Vector3 direc;
+        int distMax = 5;
+        float distMin = 1.0f;
+     
+
+        foreach (GameObject go in GameManager.npcList)
+        {
+            float distanceTarget = Vector3.Distance(transform.position, go.transform.position);
+            if (go.GetComponent<Player>()|| go.GetComponent<Citizen>())
+            {
+                if (distanceTarget <= distMax)
+                {
+                    if(distanceTarget >= distMin)
+                    {
+                        StopCoroutine(fade());
+                        Actions = Acciones.Reaccionar;
+                        direc = Vector3.Normalize(go.transform.position - gameObject.transform.position);
+                        gameObject.transform.position += direc * 0.04f;
+                        transform.LookAt(go.transform);
+                        target = true;
+                    }   
+                }
+            }
+        }
     }
 
     public virtual void Agrupar()
@@ -70,16 +98,18 @@ public class Npcs : MonoBehaviour
                 transform.Rotate(Rotate(rotateop) * Time.deltaTime * Random.Range(1000, 1500));
                 break;
         }
-
     }
    
     private void Update()
     {
         Agrupar();
+
         if(corroutinebool == true)
         {
             StartCoroutine(fade());
-        } 
+        }
+
+        Reaccionar();
     }
 
 

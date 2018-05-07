@@ -1,36 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Npc.Ally;
+using UnityEngine.UI;
 namespace Npc
 {
     namespace Enemy
     {
-
         public class Zombie : Npcs
         {
             public GameObject go;
             public ZombieInfo gz;
             public Gusto gusto;
             public GameObject playerObject;
+            public bool convert = false;
+            GameManager gm;
+            GameObject IntansCanvas;
 
 
             private void Start()
             {
+                gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();      
+                IntansCanvas = Instantiate(gm.canvasZombie,gameObject.transform.position,Quaternion.identity);
+                IntansCanvas.transform.SetParent(gameObject.transform);
+                IntansCanvas.transform.position = transform.position;
+
                 go = gameObject;
-                edad = Random.Range(15, 100);
                 go.name = "Zombie";
                 int numColor = Random.Range(0, 3);
-                GameObject[] gamesInGame = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
-                foreach (GameObject Ago in gamesInGame)
-                {
-                    Component aComponent = Ago.GetComponent(typeof(Player));
-                    if (aComponent != null)
-                    {
-                        playerObject = Ago;
-                    }
-                }
-
+                Rigidbody rb = GetComponent<Rigidbody>();
+                rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
+              
                 switch (numColor)
                 {
                     case 0:
@@ -44,115 +44,40 @@ namespace Npc
                         break;
                 }
 
-                gusto = (Gusto)Random.Range(0, 5); 
-                gz.gustoZombie = gusto; 
+                gusto = (Gusto)Random.Range(0, 5);
+                gz.gustoZombie = gusto;
             }
+            Text zombieMenssage;
 
-
-            public override Vector3 Avanzar(int dir)
+            public void DisplayWrite(bool id)
             {
-                return base.Avanzar(dir)/edad;
+
+                if (id == true)
+                {
+                    Text[] tx;
+                    tx = IntansCanvas.transform.Find("ZombieText").GetComponents<Text>(); 
+                    IntansCanvas.SetActive(true);
+                    zombieMenssage = tx[0];
+                    zombieMenssage.text = "Arrrrrr quiero comer: " + gz.gustoZombie.ToString();
+                   
+                }
                 
-            }
-
-            Vector3 direc;
-            int distZombie = 5;
-            float disZombieMin = 1.2f;
-            float distancePlayer;
-
-            public override void Agrupar()
-            {
-                if (distancePlayer < distZombie)
+                if(id == false)
                 {
-                    StopCoroutine(fade());
-                    Reaccionar();
-                }
-                else if (corroutinebool == false && distancePlayer > distZombie)
-                {
-                    corroutinebool = true;
-                    StartCoroutine(fade());
+                    IntansCanvas.SetActive(false);
                 }
 
-                base.Agrupar();
-
             }
 
-            public override void Reaccionar()
+            private void OnCollisionEnter(Collision collision)
             {
-                if (distancePlayer > disZombieMin)
+                if(collision.gameObject.GetComponent<Citizen>())
                 {
-                    Actions = Acciones.Reaccionar;
-                    direc = Vector3.Normalize(playerObject.transform.position - transform.position);
-                    transform.position += direc * 0.1f;
-                    transform.LookAt(playerObject.transform);
-                    base.corroutinebool = false;
+                    Citizen cit = collision.gameObject.GetComponent<Citizen>();
+                    Zombie z = (Zombie)cit;
+                    z.convert = true;
                 }
             }
-
-            public ZombieInfo SendMensasge()
-            {
-                return gz;
-            }
-
         }
-        /*
-        Vector3 direc;
-        bool corroutinebool;
-        int distZombie = 5;
-        float disZombieMin = 1.2f;
-        float distancePlayer;
-
-        private void Update()
-        {
-            if (sz == StateZombie.Moving)
-            {
-
-                transform.position += Movement(moveli);
-            }
-            else if (sz == StateZombie.Idle)
-            {
-
-                transform.position += Vector3.zero;
-            }
-            else if (sz == StateZombie.Rotate)
-            {
-                transform.Rotate(RotationZ(roteli) * Time.deltaTime * Random.Range(1000, 1500));
-            }
-
-            Vector3 myvector3 = playerObject.transform.position - transform.position;
-            float distancePlayer = myvector3.magnitude;
-
-
-            if (distancePlayer < distZombie)
-            {
-
-                StopCoroutine(fade());
-
-
-                if (distancePlayer > disZombieMin)
-                {
-                    sz = StateZombie.Pursuing;
-                    direc = Vector3.Normalize(playerObject.transform.position - transform.position);
-                    transform.position += direc * 0.1f;
-                    transform.LookAt(playerObject.transform);
-                }
-
-            }
-            else if (corroutinebool == false && distancePlayer > distZombie)
-            {
-                corroutinebool = true;
-                StartCoroutine(fade());
-            }
-
-        }
-
-      
-        }
-
-
-
-        */
     }
-
-
 }

@@ -7,27 +7,27 @@ using Npc.Enemy;
 
 public class GameManager : MonoBehaviour
 {
-    readonly int minSpawn;
+   
     const int MAXSPAWN = 25;
     public Text textZombieNum;
     public Text textFarmerNum;
-    public List<GameObject> npcList = new List<GameObject>();
+    public Text textZombie;
+    public GameObject canvasZombie;
+    static public List<GameObject> npcList = new List<GameObject>();
+    public static GameManager gm;
 
-    public GameManager()
-    {        
-        minSpawn = Inicializar.minValue;
-    }
     
     void Awake()
-    {  
-        textZombieNum = FindObjectOfType<Canvas>().transform.Find("ZombieText").GetComponent<Text>();
-        textFarmerNum = FindObjectOfType<Canvas>().transform.Find("FarmerText").GetComponent<Text>();
+    {
+        textZombieNum = FindObjectOfType<Canvas>().transform.Find("ZombieTextCount").GetComponent<Text>();
+        textFarmerNum = FindObjectOfType<Canvas>().transform.Find("FarmerTextCount").GetComponent<Text>();
     }
 
     void Start ()
-    { 
-        int typeOfSpawn=-1;
-        int rangeOfSpawn = Random.Range(minSpawn, MAXSPAWN);
+    {
+      
+        int typeOfSpawn= -1;
+        int rangeOfSpawn = Random.Range(new MinValue().minValue, MAXSPAWN);
 
         for (int i = 0; i<rangeOfSpawn;i++)
         {
@@ -37,7 +37,8 @@ public class GameManager : MonoBehaviour
             switch (typeOfSpawn)
             {
                 case 1:
-                    go.AddComponent<Zombie>();
+
+                    go.AddComponent<Zombie>();    
                    typeOfSpawn = Random.Range(1, 3);
                     break;
                 case 2:
@@ -50,10 +51,9 @@ public class GameManager : MonoBehaviour
                     break;
             }
           
-            if(go.GetComponent<Zombie>() || go.GetComponent<Citizen>())
-            {
+      
                 npcList.Add(go);
-            }
+            
         }
     }
    
@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-       
         countZombie = 0;
         countFarmer = 0;
         foreach (GameObject go in npcList)
@@ -77,6 +76,15 @@ public class GameManager : MonoBehaviour
             }
         }
         textZombieNum.text = "Quedan "+countZombie+" Zombies";
-        textFarmerNum.text = "Quedan " + countFarmer + " Citizen";
+        textFarmerNum.text = "Quedan "+ countFarmer + " Citizen";
+    }
+}
+public class MinValue
+{
+    public readonly int minValue;
+
+    public MinValue()
+    {
+        minValue = Random.Range(5, 16);
     }
 }

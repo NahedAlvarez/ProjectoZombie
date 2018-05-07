@@ -36,7 +36,6 @@ public enum Nombres
 }
 public struct CitizenInfo
 {
-    public int age;
     public Nombres names;
 }
 
@@ -53,7 +52,11 @@ public enum Gusto
 public struct ZombieInfo
 {
     public Gusto gustoZombie;
-    public int age;
 }
 
+
+public struct Age
+{
+    public int age;
+}
 

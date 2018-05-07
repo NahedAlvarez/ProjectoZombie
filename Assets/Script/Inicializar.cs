@@ -1,16 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inicializar : MonoBehaviour
 {
-    //inicializar utiliza un minValue 
-    public static int minValue;
+
     public static float speed;
-	void Awake()
+   
+
+    void Awake()
     {
-        minValue = Random.Range(5, 16);
+        
         speed = Random.Range(5, 16);
-        gameObject.AddComponent<GameManager>();
+      //  gameObject.AddComponent<GameManager>();
     }
+
 }
