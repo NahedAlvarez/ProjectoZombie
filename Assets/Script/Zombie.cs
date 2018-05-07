@@ -20,11 +20,13 @@ namespace Npc
 
             private void Start()
             {
+                //se obtiene el gamemanager 
                 gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+                // se intancia el canvas para manejar el UI
                 IntansCanvas = Instantiate(gm.canvasZombie, gameObject.transform.position, Quaternion.identity);
                 IntansCanvas.transform.SetParent(gameObject.transform);
                 IntansCanvas.transform.position = transform.position;
-
+                //se obtiene un go y se le agregan las propiedades de zombie
                 go = gameObject;
                 go.name = "Zombie";
                 int numColor = Random.Range(0, 3);
@@ -48,10 +50,9 @@ namespace Npc
                 gz.gustoZombie = gusto;
             }
             Text zombieMenssage;
-
+            // se modifica el texto  del zombie y se verifica si hay que desactivarlo o activarlo
             public void DisplayWrite(bool id)
             {
-
                 if (id == true)
                 {
                     Text[] tx;
@@ -59,7 +60,6 @@ namespace Npc
                     IntansCanvas.SetActive(true);
                     zombieMenssage = tx[0];
                     zombieMenssage.text = "Arrrrrr quiero comer: " + gz.gustoZombie.ToString();
-
                 }
 
                 if (id == false)
@@ -68,9 +68,10 @@ namespace Npc
                 }
 
             }
-
+            //si un zombie collisiona con un ciudadano 
             private void OnCollisionEnter(Collision collision)
             {
+                // verificamos que sea el citizen Citizen se convierte le agrega el componente zombie  y se le dice que es convertido 
                 if (collision.gameObject.GetComponent<Citizen>())
                 {
                     Citizen cit = collision.gameObject.GetComponent<Citizen>();

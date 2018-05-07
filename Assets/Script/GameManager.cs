@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     static public List<GameObject> npcList = new List<GameObject>();
     public static GameManager gm;
 
-    
+   // se toman de la escena los text para los contadores 
     void Awake()
     {
         textZombieNum = FindObjectOfType<Canvas>().transform.Find("ZombieTextCount").GetComponent<Text>();
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     void Start ()
     {
-      
+      //se crea un for para las intancias 
         int typeOfSpawn= -1;
         int rangeOfSpawn = Random.Range(new MinValue().minValue, MAXSPAWN);
 
@@ -51,17 +51,18 @@ public class GameManager : MonoBehaviour
                     break;
             }
           
-      
+                //se añaden en la lista todas las intancias 
                 npcList.Add(go);
             
         }
     }
-   
+   //se crean dos variables de tipo int 
     int countZombie;
     int countFarmer;
 
     void Update()
     {
+        //se inicializan en 0 y se suman  los componentes de zombie y cit 
         countZombie = 0;
         countFarmer = 0;
         foreach (GameObject go in npcList)
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
                 countFarmer++;
             }
         }
+        //se modifican los textos 
         textZombieNum.text = "Quedan "+countZombie+" Zombies";
         textFarmerNum.text = "Quedan "+ countFarmer + " Citizen";
     }

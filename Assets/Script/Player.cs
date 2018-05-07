@@ -21,9 +21,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
-        Camera.main.gameObject.AddComponent<FpsController>();
+        rb = GetComponent<Rigidbody>(); //se obtiene el rigidbody
+        rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition; //Se frezea los constraints
+        Camera.main.gameObject.AddComponent<FpsController>();//se añade el FPS controller components
         Camera.main.transform.SetParent(gameObject.transform);
         Camera.main.transform.position = gameObject.transform.position;
         Camera.main.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 1, gameObject.transform.position.z);
@@ -31,15 +31,15 @@ public class Player : MonoBehaviour
         gameObject.AddComponent<FpsController>();
     }
 
-    ZombieInfo gz;
-    CitizenInfo ci;
-    float distZombie;
-    Text zombie;
-    Zombie zb;
+    ZombieInfo gz; // se crea una instancia de la estructura zombie
+    CitizenInfo ci;  // se crea una instancia de la estructura Cititzen 
+    float distZombie; //Se crea una varible de distancia 
+    Text zombie; // se crea un text zombie
+    Zombie zb; // se crea un zombie 
     
     private void Update()
     {
-
+        //en el foreach  se revizan los objetos de la lista y se revisa la distancai entre los zombies y el player
         foreach (GameObject go in GameManager.npcList)
         { 
             if (go.GetComponent<Zombie>())
@@ -57,8 +57,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-
 }
 
 

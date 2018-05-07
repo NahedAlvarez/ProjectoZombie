@@ -12,7 +12,7 @@ public class Npcs : MonoBehaviour
     public Age botAge;
 
     float rotate = 1;
-
+    //se rota el personaje 
     public Vector3 Rotate(int dir)
     {
         Vector3 vec = Vector3.zero;
@@ -29,6 +29,7 @@ public class Npcs : MonoBehaviour
     }
 
     int move = 100;
+    //se mueve el personaje
     public Vector3 Avanzar(int dir)
     {
         Vector3 vec = Vector3.zero;
@@ -51,11 +52,13 @@ public class Npcs : MonoBehaviour
         }
         return vec/botAge.age;
     }
+    //se le da una edad en el awake 
     private void Awake()
     {
         botAge.age = Random.Range(15, 100);
     }
     public bool target;
+    //se crea una funcion para tomar la distancia player zombie 
     public virtual void Reaccionar()
     {
         Vector3 direc;
@@ -83,7 +86,7 @@ public class Npcs : MonoBehaviour
             }
         }
     }
-
+    //se crea un metodo agrupar 
     public virtual void Agrupar()
     {
         switch (Actions)
@@ -99,7 +102,7 @@ public class Npcs : MonoBehaviour
                 break;
         }
     }
-   
+   //se verifica en el update las acciones de las corroutinas 
     private void Update()
     {
         Agrupar();
