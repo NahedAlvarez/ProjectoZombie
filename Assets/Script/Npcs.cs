@@ -4,7 +4,6 @@ using UnityEngine;
 using Npc.Ally;
 using Npc.Enemy;
 [RequireComponent(typeof(Rigidbody))]
-
 public class Npcs : MonoBehaviour
 {
     public Acciones Actions;

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     readonly public float speed;
     Rigidbody rb;
     Text textZombie;
+    Text textCitizen;
     
 
 
@@ -29,11 +30,13 @@ public class Player : MonoBehaviour
         Camera.main.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 1, gameObject.transform.position.z);
         gameObject.AddComponent<MovementFps>();
         gameObject.AddComponent<FpsController>();
+        textCitizen = FindObjectOfType<Canvas>().transform.Find("Container").GetComponentInChildren<Text>();//GetComponent<Text>();
+    
     }
 
     ZombieInfo gz; // se crea una instancia de la estructura zombie
     CitizenInfo ci;  // se crea una instancia de la estructura Cititzen 
-    float distZombie; //Se crea una varible de distancia 
+    float dist; //Se crea una varible de distancia 
     Text zombie; // se crea un text zombie
     Zombie zb; // se crea un zombie 
     
@@ -41,20 +44,40 @@ public class Player : MonoBehaviour
     {
         //en el foreach  se revizan los objetos de la lista y se revisa la distancai entre los zombies y el player
         foreach (GameObject go in GameManager.npcList)
-        { 
-            if (go.GetComponent<Zombie>())
+        {
+            if(gameObject != go)
             {
-                zb = go.GetComponent<Zombie>();
-                distZombie = Vector3.Distance(gameObject.transform.position, go.transform.position);
-                if (distZombie < 5)
+                dist = Vector3.Distance(gameObject.transform.position, go.transform.position);
+                if (go.GetComponent<Zombie>())
                 {
-                    zb.DisplayWrite(true);
+
+                    zb = go.GetComponent<Zombie>();
+
+                    if (dist< 5)
+                    {
+
+                    }
+                    else if (dist > 5)
+                    {
+
+                    }
                 }
-                else if (distZombie > 5)
+                if (go.GetComponent<Citizen>())
                 {
-                    zb.DisplayWrite(false);
+                    if (dist < 3)
+                    {
+                        textCitizen.text = go.name + ": ";
+                    }
+                    else if (dist > 5)
+                    {
+
+                    }
+                    
                 }
+
             }
+
+
         }
     }
 }

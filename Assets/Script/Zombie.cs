@@ -16,23 +16,18 @@ namespace Npc
             public bool convert = false;
             GameManager gm;
             public  GameObject IntansCanvas;
-
+            Rigidbody rb;
 
             private void Start()
             {
                 //se obtiene el gamemanager 
                 gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
-                // se intancia el canvas para manejar el UI
-                IntansCanvas = Instantiate(gm.canvasZombie, gameObject.transform.position, Quaternion.identity);
-                IntansCanvas.transform.SetParent(gameObject.transform);
-                IntansCanvas.transform.position = transform.position;
+                rb = GetComponent<Rigidbody>();
+                rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                 //se obtiene un go y se le agregan las propiedades de zombie
                 go = gameObject;
                 go.name = "Zombie";
-                int numColor = Random.Range(0, 3);
-                Rigidbody rb = GetComponent<Rigidbody>();
-                rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
-
+                int numColor = Random.Range(0,3);
                 switch (numColor)
                 {
                     case 0:
@@ -49,26 +44,8 @@ namespace Npc
                 gusto = (Gusto)Random.Range(0, 5);
                 gz.gustoZombie = gusto;
             }
-            Text zombieMenssage;
-            // se modifica el texto  del zombie y se verifica si hay que desactivarlo o activarlo
-            public void DisplayWrite(bool id)
-            {
-                if (id == true)
-                {
-                    Text[] tx;
-                    tx = IntansCanvas.transform.Find("ZombieText").GetComponents<Text>();
-                    IntansCanvas.SetActive(true);
-                    zombieMenssage = tx[0];
-                    zombieMenssage.text = "Arrrrrr quiero comer: " + gz.gustoZombie.ToString();
-                }
-
-                if (id == false)
-                {
-                    IntansCanvas.SetActive(false);
-                }
-
-            }
             //si un zombie collisiona con un ciudadano 
+
             private void OnCollisionEnter(Collision collision)
             {
                 // verificamos que sea el citizen Citizen se convierte le agrega el componente zombie  y se le dice que es convertido 

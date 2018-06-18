@@ -12,14 +12,12 @@ public class GameManager : MonoBehaviour
     public Text textZombieNum;
     public Text textFarmerNum;
     public Text textZombie;
-    public GameObject canvasZombie;
     static public List<GameObject> npcList = new List<GameObject>();
     public static GameManager gm;
 
    // se toman de la escena los text para los contadores 
     void Awake()
     {
-        textZombieNum = FindObjectOfType<Canvas>().transform.Find("ZombieTextCount").GetComponent<Text>();
         textFarmerNum = FindObjectOfType<Canvas>().transform.Find("FarmerTextCount").GetComponent<Text>();
     }
 
@@ -32,14 +30,14 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i<rangeOfSpawn;i++)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            go.transform.position = new Vector3(Random.Range(-10, 10), 1, Random.Range(-10, 10));
+            go.transform.position = new Vector3(Random.Range(-10, 10),0 , Random.Range(-10, 10));
            
             switch (typeOfSpawn)
             {
                 case 1:
 
-                    go.AddComponent<Zombie>();    
-                   typeOfSpawn = Random.Range(1, 3);
+                    go.AddComponent<Citizen>(); // go.AddComponent<Zombie>();    
+                    typeOfSpawn = Random.Range(1, 3);
                     break;
                 case 2:
                     go.AddComponent<Citizen>();
@@ -57,28 +55,22 @@ public class GameManager : MonoBehaviour
         }
     }
    //se crean dos variables de tipo int 
-    int countZombie;
+ 
     int countFarmer;
 
     void Update()
     {
         //se inicializan en 0 y se suman  los componentes de zombie y cit 
-        countZombie = 0;
         countFarmer = 0;
         foreach (GameObject go in npcList)
         {
-            if (go.GetComponent<Zombie>() != null)
-            {
-                countZombie++;
-            }
-            else if (go.GetComponent<Citizen>() != null)
+            if (go.GetComponent<Citizen>() != null)
             {
                 countFarmer++;
             }
         }
         //se modifican los textos 
-        textZombieNum.text = "Quedan "+countZombie+" Zombies";
-        textFarmerNum.text = "Quedan "+ countFarmer + " Citizen";
+         textFarmerNum.text = "Quedan "+ countFarmer + " ciudadanos sanos";
     }
 }
 public class MinValue

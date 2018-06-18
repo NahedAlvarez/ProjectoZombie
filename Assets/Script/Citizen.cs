@@ -15,25 +15,19 @@ namespace Npc
 
             GameManager gm;
             public GameObject IntansCanvas;
-
+            Rigidbody rb;
 
             private void Start()
             {
                 //se busca el gamemanager
                 gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
-                //se intancia el canvas 
-                IntansCanvas = Instantiate(gm.canvasZombie, gameObject.transform.position, Quaternion.identity);
-                IntansCanvas.transform.SetParent(gameObject.transform);
-                IntansCanvas.transform.position = transform.position;
-                //se modifica el text
-                DisplayModify();
-                IntansCanvas.SetActive(false);
+                rb = GetComponent<Rigidbody>();
+                rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                //DisplayModify();
                 //se crean los datos 
                 StartCoroutine(fade());
                 ci.names = (Nombres)Random.Range(0, 20);
                 gameObject.name = ci.names.ToString();
-                Rigidbody rb = GetComponent<Rigidbody>();
-                rb.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
             }
 
            
@@ -55,13 +49,14 @@ namespace Npc
                                 StopCoroutine(fade());
                                 Actions = Acciones.Reaccionar;
                                 direc = new Vector3(go.transform.position.x + gameObject.transform.position.x,0, go.transform.position.z + gameObject.transform.position.z);
-                                gameObject.transform.position += direc * 100/ botAge.age * Time.deltaTime;
+                                //gameObject.transform.position += direc * (100/ botAge.age) * Time.deltaTime;
+                                gameObject.transform.position = Vector3.MoveTowards(transform.position, direc, -1 *(100 / botAge.age) * Time.deltaTime);
                             }
                         }
                     }
                 }
             }
-            Text farmerText;
+           /* Text farmerText;
             //Se modifica el texto
             public void DisplayModify()
             {
@@ -88,7 +83,7 @@ namespace Npc
                 }
             }
             // se hace la conversion zombie citizen y se destruye el elemento citizen
-
+            */
             public static implicit operator Zombie(Citizen cit)
             {
                 Zombie z = cit.gameObject.AddComponent<Zombie>();
