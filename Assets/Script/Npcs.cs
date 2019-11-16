@@ -67,22 +67,25 @@ public class Npcs : MonoBehaviour
 
         foreach (GameObject go in GameManager.npcList)
         {
-            float distanceTarget = Vector3.Distance(transform.position, go.transform.position);
-            if (go.GetComponent<Player>()|| go.GetComponent<Citizen>())
+            if(go != null)
             {
-                if (distanceTarget <= distMax)
+                float distanceTarget = Vector3.Distance(transform.position, go.transform.position);
+                if (go.GetComponent<Player>() || go.GetComponent<Citizen>())
                 {
-                    if(distanceTarget >= distMin)
+                    if (distanceTarget <= distMax)
                     {
-                        StopCoroutine(fade());
-                        Actions = Acciones.Reaccionar;
-                        direc = Vector3.Normalize(go.transform.position - gameObject.transform.position);
-                        gameObject.transform.position += direc * 0.04f;
-                        transform.LookAt(go.transform);
-                        target = true;
-                    }   
+                        if (distanceTarget >= distMin)
+                        {
+                            StopCoroutine(fade());
+                            Actions = Acciones.Reaccionar;
+                            direc = Vector3.Normalize(go.transform.position - gameObject.transform.position);
+                            gameObject.transform.position += direc * 0.04f;
+                            transform.LookAt(go.transform);
+                            target = true;
+                        }
+                    }
                 }
-            }
+            } 
         }
     }
     //se crea un metodo agrupar 

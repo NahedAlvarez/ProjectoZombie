@@ -27,10 +27,16 @@ public class CombatManager : MonoBehaviour
         lifeBar = maxLife;
         for (int i = 0; i< HeartsUI.Length; i++)
         {
-            print(i);
             HeartsUI[i].sprite = Heart[1];
         }
        
+    }
+
+    public void Lifen()
+    {
+        lifeBar = maxLife;
+        sliderLife.value = lifeBar;
+        textLife.text = (int)lifeBar + "% / 100";
     }
 
     void Damage(float damage)
@@ -40,27 +46,29 @@ public class CombatManager : MonoBehaviour
 
     void LifeReguler()
     {
+        if (lifes == 0)
+        {
+            GameOver.gameObject.SetActive(true);
+            Time.timeScale = 0.0f;
+            FpsController fp = Camera.main.GetComponent<FpsController>();
+            fp.enabled = false;
+            return;
+        }
+
         if (lifeBar <= 0)
         {
-            if (lifes < 0)
-            {
-                GameOver.gameObject.SetActive(true);
-                Time.timeScale = 0.0f;
-                return;
-            }
-
             lifeBar = minLife;
             lifes = lifes - 1;
             lifeBar = maxLife;
             HeartsUI[lifes].sprite = Heart[0];
         }
     
-        if (lifeBar > 99)
+        if (lifeBar > 100)
         {
             lifeBar = maxLife;
         }
         sliderLife.value = lifeBar;
-        textLife.text = (int)lifeBar + "%";
+        textLife.text = (int)lifeBar + "% / 100";
     }
 
     private void Update()
@@ -68,19 +76,22 @@ public class CombatManager : MonoBehaviour
         LifeReguler();
         foreach (GameObject go in GameManager.npcList)
         {
-            if (go.GetComponent<Player>())
+            if(go != null)
             {
-                player = go;
-            }
-
-            if (go.GetComponent<Zombie>())
-            {
-                distZombie = Vector3.Distance(player.transform.position, go.transform.position);
-                if (distZombie < 5)
+                if (go.GetComponent<Player>())
                 {
-                    if (distZombie < 2)
+                    player = go;
+                }
+
+                if (go.GetComponent<Zombie>() || go.GetComponent<Vampire>())
+                {
+                    distZombie = Vector3.Distance(player.transform.position, go.transform.position);
+                    if (distZombie < 5)
                     {
-                        Damage(10*Time.deltaTime);
+                        if (distZombie > 2)
+                        {
+                            Damage(10 * Time.deltaTime);
+                        }
                     }
                 }
             }

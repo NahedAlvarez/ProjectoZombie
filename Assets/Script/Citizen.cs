@@ -39,56 +39,32 @@ namespace Npc
                 //para cada uno de los go en la lista npcList se verifica su distancia y componente zombie 
                 foreach (GameObject go in GameManager.npcList)
                 {
-                    float distanceTarget = Vector3.Distance(transform.position, go.transform.position);
-                    if (go.GetComponent<Zombie>())
+                    if(go != null)
                     {
-                        if (distanceTarget <= distMax)
+                        float distanceTarget = Vector3.Distance(transform.position, go.transform.position);
+                        if (go.GetComponent<Zombie>())
                         {
-                            if (distanceTarget >= distMin)
+                            if (distanceTarget <= distMax)
                             {
-                                StopCoroutine(fade());
-                                Actions = Acciones.Reaccionar;
-                                direc = new Vector3(go.transform.position.x + gameObject.transform.position.x,0, go.transform.position.z + gameObject.transform.position.z);
-                                //gameObject.transform.position += direc * (100/ botAge.age) * Time.deltaTime;
-                                gameObject.transform.position = Vector3.MoveTowards(transform.position, direc, -1 *(100 / botAge.age) * Time.deltaTime);
+                                if (distanceTarget >= distMin)
+                                {
+                                    StopCoroutine(fade());
+                                    Actions = Acciones.Reaccionar;
+                                    direc = Vector3.Normalize(go.transform.position - gameObject.transform.position);
+                                    gameObject.transform.position += direc * (-100 / botAge.age) * Time.deltaTime;
+                                    transform.LookAt(go.transform);
+                                }
                             }
                         }
                     }
                 }
             }
-           /* Text farmerText;
-            //Se modifica el texto
-            public void DisplayModify()
-            {
-                Text[] tx;
-                tx = IntansCanvas.transform.Find("ZombieText").GetComponents<Text>();
-                IntansCanvas.SetActive(true);
-                farmerText = tx[0];
-                farmerText.text = "Hola soy " + ci.names.ToString() + " y tengo " + botAge.age + "Años ";
-            }
-            //si collisiona con el player se activa el mensaje 
-            private void OnCollisionEnter(Collision collision)
-            {
-                if (collision.gameObject.GetComponent<Player>() && IntansCanvas != null)
-                {
-                    IntansCanvas.gameObject.SetActive(true);
-                }
-            }
-            //si deja de collisionar se desactiva el mensaje 
-            private void OnCollisionExit(Collision collision)
-            {
-                if (collision.gameObject.GetComponent<Player>() && IntansCanvas != null)
-                {
-                    IntansCanvas.gameObject.SetActive(false);
-                }
-            }
-            // se hace la conversion zombie citizen y se destruye el elemento citizen
-            */
+          
             public static implicit operator Zombie(Citizen cit)
             {
                 Zombie z = cit.gameObject.AddComponent<Zombie>();
+                EnemyDamage enem = cit.gameObject.AddComponent<EnemyDamage>();
                 z.botAge.age = cit.botAge.age;
-                z.IntansCanvas = cit.IntansCanvas;
                 Destroy(cit);
                 return z;
             }

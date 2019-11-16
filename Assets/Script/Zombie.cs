@@ -20,11 +20,9 @@ namespace Npc
 
             private void Start()
             {
-                //se obtiene el gamemanager 
                 gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
                 rb = GetComponent<Rigidbody>();
                 rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-                //se obtiene un go y se le agregan las propiedades de zombie
                 go = gameObject;
                 go.name = "Zombie";
                 int numColor = Random.Range(0,3);
@@ -40,12 +38,10 @@ namespace Npc
                         go.GetComponent<Renderer>().material.color = Color.green;
                         break;
                 }
-
                 gusto = (Gusto)Random.Range(0, 5);
                 gz.gustoZombie = gusto;
             }
-            //si un zombie collisiona con un ciudadano 
-
+         
             private void OnCollisionEnter(Collision collision)
             {
                 // verificamos que sea el citizen Citizen se convierte le agrega el componente zombie  y se le dice que es convertido 
@@ -54,7 +50,6 @@ namespace Npc
                     Citizen cit = collision.gameObject.GetComponent<Citizen>();
                     Zombie z = (Zombie)cit;
                     z.convert = true;
-                   
                 }
             }
         }
